@@ -14,6 +14,13 @@ public class PlayerMovement : MonoBehaviour
 
     MeshRenderer pRenderer;
 
+    public Camera playerCamera;
+    public Vector3 cameraOffset;
+    
+    public float cameraCursorDistance = 0.33f;
+
+    public Transform cinemachineTarget;
+
     void Start()
     {
         pController = GetComponent<CharacterController>();
@@ -49,6 +56,17 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {       
+        // Get the cursor position
+        Vector3 viewDirection = playerCamera.ScreenToWorldPoint(new Vector3 (Input.mousePosition.x, Input.mousePosition.y, cameraCursorDistance));
+        viewDirection.z = transform.position.z;
+        
+        // Ensure that the camera is between the cursor and the player. 0 meaning stuck at the player, 1 at the camera.
+        var newCameraPosition = Vector3.Lerp(transform.position, viewDirection, cameraCursorDistance);
+        newCameraPosition += cameraOffset;
+
+        cinemachineTarget.position = newCameraPosition;
+
+
         xInput = Input.GetAxisRaw("Horizontal");
 
         // Ensure horizontal movement is frame-rate independent
@@ -91,5 +109,4 @@ public class PlayerMovement : MonoBehaviour
     {
         pVelocity.y = pData.jumpStrength;
     }
-
 }
