@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3216a3284fe7e9a0c8c0a9a5a637e219, type: 3}
+  m_Name: Armor Set
+  m_EditorClassIdentifier: 
+  entityName: 
+  entityMaterial: {fileID: 2100000, guid: c0d43129a74c027c784cbb257915d7c3, type: 2}
+  shiftDistance: 4
+  movementSpeed: 1
+  checksGround: 0
+  gravityModifier: 7
+  jumpStrength: 0
+  attackEvent:
+    m_PersistentCalls:
+      m_Calls: []

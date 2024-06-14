@@ -1,30 +1,50 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.Windows.WebCam;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public PlayerData pData;
+    public ShiftData pData;
     public CharacterController pController;
+
+    ShiftData ogData;
 
     float xInput;
     public Vector3 pVelocity;
 
+    public ShiftData selectedObject;
+
+    MeshRenderer pRenderer;
+
     void Start()
     {
         pController = GetComponent<CharacterController>();
+        ogData = pData;
 
-        InitializePlayer();
+        pRenderer = GetComponentInChildren<MeshRenderer>();
+
+        InitializePlayer(ogData);
     }
 
-    void InitializePlayer()
+    void InitializePlayer(ShiftData data)
     {
-        //
+        pRenderer.material = data.entityMaterial;
+        pData = data;
     }
+
     void Update()
     {
         Move();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (selectedObject != null)
+            {
+                InitializePlayer(selectedObject);
+            }
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            InitializePlayer(ogData);
+        }
     }
 
     void Move()

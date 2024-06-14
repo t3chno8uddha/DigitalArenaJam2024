@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3216a3284fe7e9a0c8c0a9a5a637e219, type: 3}
+  m_Name: 1. Knight-Sword
+  m_EditorClassIdentifier: 
+  entityMaterial: {fileID: 2100000, guid: 370b55fd41a5c72cd94f18a68d2c95f5, type: 2}
+  shiftDistance: 3
+  movementSpeed: 4
+  checksGround: 1
+  gravityModifier: 7
+  jumpStrength: 0
+  attackEvent:
+    m_PersistentCalls:
+      m_Calls: []
