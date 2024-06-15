@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
                 InitializePlayer(selectedObject);
             }
         }
-        else if (Input.GetMouseButtonDown(1))
+        else if (Input.GetKeyDown(KeyCode.R))
         {
             InitializePlayer(ogData);
         }

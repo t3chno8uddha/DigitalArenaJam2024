@@ -10,20 +10,22 @@ public class ShiftObject : MonoBehaviour
 
     Material sMaterial;
 
-    PlayerMovement pMovement;
+    public PlayerMovement pMovement;
     Transform pTransform;
 
     bool isHovering = false;
+
+    public MeshRenderer sRenderer;
 
     void Start()
     {
         pMovement = FindObjectOfType<PlayerMovement>();
         pTransform = pMovement.transform;
 
-        InitializeObject(GetComponent<MeshRenderer>());
+        InitializeObject(sRenderer);
     }
 
-    void InitializeObject(MeshRenderer renderer)
+    public void InitializeObject(MeshRenderer renderer)
     {
         renderer.material = sData.entityMaterial;
         sMaterial = renderer.material;

@@ -67,11 +67,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: c0d43129a74c027c784cbb257915d7c3, type: 2}
+      objectReference: {fileID: 2100000, guid: 51e39f6d4c029f60481287796afea01f, type: 2}
     - target: {fileID: 919132149155446097, guid: bf4f4a6fa6513176db4fd154cca32ff4,
         type: 3}
       propertyPath: m_Name
-      value: Armor Set
+      value: Chair
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea7f3b292eed86f09a0375e80906148b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sData: {fileID: 11400000, guid: 978f4797b6ff2d68da602c3844432a41, type: 2}
   canBeSelected: 1
-  sData: {fileID: 11400000, guid: dabfd2e6bacc4d841a34a37329689ee8, type: 2}
   isSelected: 0
-  pTransform: {fileID: 0}
+  sRenderer: {fileID: 0}

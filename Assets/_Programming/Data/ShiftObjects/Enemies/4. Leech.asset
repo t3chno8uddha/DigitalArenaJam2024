@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3216a3284fe7e9a0c8c0a9a5a637e219, type: 3}
+  m_Script: {fileID: 11500000, guid: c8accb879f2202ef89d423199e2d6d28, type: 3}
   m_Name: 4. Leech
   m_EditorClassIdentifier: 
   entityMaterial: {fileID: 2100000, guid: 6e38390c96b9e6f81b329797bd0a9023, type: 2}
@@ -21,3 +21,8 @@ MonoBehaviour:
   attackEvent:
     m_PersistentCalls:
       m_Calls: []
+  viewRange: 7
+  patience: 5
+  stopDistance: 0.5
+  readjustmentSpeed: 0.125
+  sightAngle: 90

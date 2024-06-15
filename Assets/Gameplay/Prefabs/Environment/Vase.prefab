@@ -67,11 +67,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 51e39f6d4c029f60481287796afea01f, type: 2}
+      objectReference: {fileID: 2100000, guid: cb5eb4db5a5abdfe49f7e6580e849f70, type: 2}
     - target: {fileID: 919132149155446097, guid: bf4f4a6fa6513176db4fd154cca32ff4,
         type: 3}
       propertyPath: m_Name
-      value: Chair
+      value: Vase
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -86,6 +86,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 9210709077186345158}
   m_SourcePrefab: {fileID: 100100000, guid: bf4f4a6fa6513176db4fd154cca32ff4, type: 3}
+--- !u!23 &5544299623410040807 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: bf4f4a6fa6513176db4fd154cca32ff4,
+    type: 3}
+  m_PrefabInstance: {fileID: 6570992100682064739}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6337043314834955826 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bf4f4a6fa6513176db4fd154cca32ff4,
@@ -126,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea7f3b292eed86f09a0375e80906148b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sData: {fileID: 11400000, guid: 40ac184811722a13b82a50d4076cee8b, type: 2}
   canBeSelected: 1
-  sData: {fileID: 11400000, guid: 978f4797b6ff2d68da602c3844432a41, type: 2}
   isSelected: 0
-  pTransform: {fileID: 0}
+  sRenderer: {fileID: 5544299623410040807}
