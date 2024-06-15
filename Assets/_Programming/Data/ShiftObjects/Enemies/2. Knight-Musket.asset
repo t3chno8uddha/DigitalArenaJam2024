@@ -14,14 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityMaterial: {fileID: 2100000, guid: d05638a6da9d9b5de9d4bb535ce14a2a, type: 2}
   shiftDistance: 3
-  movementSpeed: 4
-  gravityModifier: 7
+  movementSpeed: 5
+  gravityModifier: 35
   checksGround: 1
   jumpStrength: 0
-  attackEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  viewRange: 10
+  center: {x: 0, y: 1, z: 0}
+  radiusAndHeight: {x: 0.5, y: 2}
+  attackType: 1
+  attackSize: 0
+  projectile: {fileID: 0}
+  viewRange: 5
   patience: 4
   stopDistance: 0.25
   attackDistance: 1

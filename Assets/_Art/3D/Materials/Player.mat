@@ -8,18 +8,23 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Player
-  m_Shader: {fileID: -6465566751694194690, guid: af39b32195983d12489d77379fe5ffb3,
+  m_Shader: {fileID: -6465566751694194690, guid: 99b7f79e3c8306ae6a4f9cafc49c2002,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _ALPHAPREMULTIPLY_ON
+  - _ALPHATEST_ON
+  - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - DepthOnly
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -49,10 +54,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 89accf13f09b7108db23abacb6323724, type: 3}
+        m_Texture: {fileID: 2800000, guid: 820b7165812e1d1e994841ed28cb2fcf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -82,20 +91,27 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 0
+    - _Alpha: 0.5
+    - _AlphaClip: 1
     - _AlphaToMask: 0
+    - _Alpha_Clipping: 0.133
+    - _Angle_Offset: 7.5
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _Density: 12.31
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _Flame_Scale: 15
+    - _Flame_Strength: 0.415
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -110,17 +126,23 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _Surface: 0
+    - _Strength: 1
+    - _Surface: 1
     - _WorkflowMode: 1
     - _X_Offset: 0
-    - _Y_Offset: 3
-    - _ZWrite: 1
+    - _Y_Offset: 1
+    - _ZTest: 4
+    - _ZWrite: 0
+    - _ZWriteControl: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 766.9962, g: 766.9962, b: 766.9962, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Sheet_Size: {r: 4, g: 4, b: 0, a: 0}
+    - _Flame_Speed: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _SStep: {r: 0.5, g: 0, b: 0, a: 0}
+    - _Sheet_Size: {r: 3, g: 2, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _UV_Speed: {r: 0, g: -0.25, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6256117962285283798
 MonoBehaviour:

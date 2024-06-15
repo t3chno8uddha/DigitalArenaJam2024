@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum EnemyState {idle, chase}
 
-public class EnemyObject : ShiftObject
+public class EnemyObject : ShiftObject, IDamageable
 {
     EnemyData eData;
 
@@ -12,7 +12,7 @@ public class EnemyObject : ShiftObject
 
     public EnemyState eState;
 
-    float xDirection;
+    [HideInInspector] public float xDirection;
     public Vector3 eVelocity;
     public CharacterController eController;
 
@@ -87,7 +87,6 @@ public class EnemyObject : ShiftObject
         // Elevate the Raycast starting position, not to shoot from the floor.
         Vector3 height = new Vector3(0, 1f, 0);
         
-
         Vector3 newPosition = transform.position - transform.right * transform.localScale.x;
 
         float targetDirection = pMovement.transform.position.x - newPosition.x;
@@ -217,5 +216,45 @@ public class EnemyObject : ShiftObject
         patrolB = oldPatrol;
 
         startedCountdown = false;
+    }
+
+    public void Damage()
+    {
+        if (pMovement.pData == pMovement.ogData)
+        {
+            pMovement.InitializePlayer(eData);
+            print ("HUUUURTS");  
+
+            Destroy(gameObject);
+        }
+    }
+
+    public void Melee(Vector3 position, float size)
+    {
+        RaycastHit hit;
+        if (Physics.SphereCast(position, size, Vector3.up, out hit))
+        {
+            IDamageable damageable = hit.transform.gameObject.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.Damage();
+            }
+        }
+    }
+    
+    public void Ranged(Vector3 position, Transform angle, GameObject projectile)
+    {
+        Instantiate(projectile, position, angle.rotation);
+    }
+
+    public void ToggleLatch(EntityData eData)
+    {
+        eData.gravityModifier = -eData.gravityModifier;
+        eData.jumpStrength = -eData.jumpStrength;
+    }
+
+    public void Ranged(Vector3 position, Vector3 angle, GameObject projectile)
+    {
+        Instantiate(projectile, position, Quaternion.Euler(angle));
     }
 }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "New Shift Data", menuName = "Data/Entity Data")]
 public class EntityData : ShiftData
@@ -8,5 +7,11 @@ public class EntityData : ShiftData
 
     public float jumpStrength;
     
-    public UnityEvent attackEvent;
+    public Vector3 center = new Vector3(0, 1, 0);
+    public Vector2 radiusAndHeight = new Vector2(0.5f, 2f);
+
+    public AttackType attackType;
+
+    public float attackSize;
+    public GameObject projectile;
 }
