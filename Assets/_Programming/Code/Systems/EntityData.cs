@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [CreateAssetMenu(fileName = "New Shift Data", menuName = "Data/Shift Data")]
-public class EntityData : ScriptableObject
+public class ShiftData : ScriptableObject
 {
     public Material entityMaterial;
     

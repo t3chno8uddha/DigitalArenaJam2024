@@ -15,14 +15,15 @@ MonoBehaviour:
   entityMaterial: {fileID: 2100000, guid: 366165174eb4028679ec25379b4bc120, type: 2}
   shiftDistance: 3
   movementSpeed: 4
-  checksGround: 0
   gravityModifier: 7
+  checksGround: 0
   jumpStrength: 0
   attackEvent:
     m_PersistentCalls:
       m_Calls: []
-  viewRange: 7
-  patience: 5
+  viewRange: 10
+  patience: 4
   stopDistance: 0.5
-  readjustmentSpeed: 0.125
+  attackDistance: 2
+  readjustmentSpeed: 0.0125
   sightAngle: 90

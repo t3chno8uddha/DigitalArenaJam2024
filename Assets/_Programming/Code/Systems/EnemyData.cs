@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Shift Data", menuName = "Data/Enemy Data")]
-public class EnemyData : ShiftData
+public class EnemyData : EntityData
 {
     public float viewRange = 4f;
     public float patience = 5f;

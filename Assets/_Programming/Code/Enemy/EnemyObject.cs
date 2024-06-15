@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Animations;
 
-public enum EnemyState {idle, chase, lounge}
+public enum EnemyState {idle, chase, patrol}
 
 public class EnemyObject : ShiftObject
 {
@@ -27,7 +25,10 @@ public class EnemyObject : ShiftObject
 
     void Start()
     {
-        eData = sData as EnemyData;
+        if (sData is EnemyData)
+        {
+            eData = sData as EnemyData;
+        }
     
         post = transform.position;
 
@@ -56,8 +57,8 @@ public class EnemyObject : ShiftObject
                 Chase();
                 break;
             
-            case EnemyState.lounge:
-                Lounge();
+            case EnemyState.patrol:
+                Patrol();
                 break;
         }
         
@@ -92,18 +93,18 @@ public class EnemyObject : ShiftObject
 
         // Elevate the Raycast starting position, not to shoot from the floor.
         Vector3 height = new Vector3(0, 1f, 0);
+        
+        float targetDirection = pMovement.transform.position.x - transform.position.x;
 
-        // Limit the angles in which the character may be looking.
-        if (Vector3.Angle(transform.right, directionToTarget) <= eData.sightAngle / 2)
+        if (Mathf.Sign(targetDirection) == Mathf.Sign(transform.localScale.x))
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position + height, directionToTarget, out hit))
+            if (Physics.Raycast(transform.position + height, directionToTarget.normalized, out hit))
             {
                 if (hit.transform == pMovement.transform)
-                {                         
-                    Debug.DrawRay(transform.position + height, directionToTarget.normalized * distanceToTarget, Color.white);
-
+                {
                     seesPlayer = true;
+                    Debug.DrawRay(transform.position + height, directionToTarget.normalized, Color.white);
                 }
                 else
                 {
@@ -134,7 +135,7 @@ public class EnemyObject : ShiftObject
         if (attack) { stopDistance = eData.attackDistance; }
         else {stopDistance = eData.stopDistance;}
 
-        if (Vector3.Distance(transform.position, location) < stopDistance) { return; }
+        if (Mathf.Abs(transform.position.x - location.x) < stopDistance) { return; }
 
         GetDirection(location);
 
@@ -182,14 +183,14 @@ public class EnemyObject : ShiftObject
         }
 
         Vector3 lScale = transform.localScale;
-        transform.localScale = new Vector3 (-targetX, lScale.y, lScale.z);
+        transform.localScale = new Vector3 (targetX, lScale.y, lScale.z);
 
         xDirection = Mathf.Lerp(xDirection, targetX, eData.readjustmentSpeed);
 
         Debug.DrawLine(targetDirection, targetDirection + Vector3.up * 2);
     }
 
-    void Lounge()
+    void Patrol()
     {
 
     }

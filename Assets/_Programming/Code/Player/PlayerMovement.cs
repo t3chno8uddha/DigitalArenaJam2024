@@ -62,10 +62,8 @@ public class PlayerMovement : MonoBehaviour
         
         // Ensure that the camera is between the cursor and the player. 0 meaning stuck at the player, 1 at the camera.
         var newCameraPosition = Vector3.Lerp(transform.position, viewDirection, cameraCursorDistance);
-        newCameraPosition += cameraOffset;
 
         cinemachineTarget.position = newCameraPosition;
-
 
         xInput = Input.GetAxisRaw("Horizontal");
 
@@ -74,16 +72,21 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (pData.checksGround)
+            if (pData is EntityData)
             {
-                if (pController.isGrounded)
+                EntityData eData = pData as EntityData;
+
+                if (eData.checksGround)
                 {
-                    Jump();
+                    if (pController.isGrounded)
+                    {
+                        Jump(eData);
+                    }
                 }
-            }
-            else
-            {
-                Jump();
+                else
+                {
+                    Jump(eData);
+                }
             }
         }
 
@@ -105,8 +108,8 @@ public class PlayerMovement : MonoBehaviour
         pController.Move(pVelocity * Time.deltaTime);
     }
 
-    void Jump()
+    void Jump(EntityData eData)
     {
-        pVelocity.y = pData.jumpStrength;
+        pVelocity.y = eData.jumpStrength;
     }
 }
