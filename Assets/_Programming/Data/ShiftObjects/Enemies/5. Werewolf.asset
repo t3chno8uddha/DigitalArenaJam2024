@@ -23,7 +23,7 @@ MonoBehaviour:
       m_Calls: []
   viewRange: 10
   patience: 4
-  stopDistance: 0.5
-  attackDistance: 2
+  stopDistance: 0.25
+  attackDistance: 1
   readjustmentSpeed: 0.0125
   sightAngle: 90

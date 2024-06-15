@@ -1,12 +1,13 @@
 using UnityEngine;
-using UnityEngine.Events;
 
-[CreateAssetMenu(fileName = "New Shift Data", menuName = "Data/Entity Data")]
-public class EntityData : ShiftData
+[CreateAssetMenu(fileName = "New Shift Data", menuName = "Data/Shift Data")]
+public class ShiftData : ScriptableObject
 {
-    public bool checksGround = true;
-
-    public float jumpStrength;
+    public Material entityMaterial;
     
-    public UnityEvent attackEvent;
+    public float shiftDistance = 4f;
+
+    public float movementSpeed;
+
+    public float gravityModifier = 7;
 }

@@ -1,14 +1,14 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
-public enum EnemyState {idle, chase, patrol}
+public enum EnemyState {idle, chase}
 
 public class EnemyObject : ShiftObject
 {
     EnemyData eData;
 
-    public Transform transformA, transformB;
+    public Transform min, max;
+    public Transform patrol;
 
     public EnemyState eState;
 
@@ -18,8 +18,7 @@ public class EnemyObject : ShiftObject
 
     public bool seesPlayer;
 
-    Vector3 post, lastPlayerPosition;
-    Vector3 minPosX, maxPosX;
+    Vector3 patrolA, patrolB, lastPlayerPosition;
 
     bool startedCountdown;
 
@@ -30,13 +29,13 @@ public class EnemyObject : ShiftObject
             eData = sData as EnemyData;
         }
     
-        post = transform.position;
+        patrolA = patrol.position;
+        patrolB = transform.position;
 
-        minPosX = transformA.position;
-        maxPosX = transformB.position;
-
-        Destroy(transformA.gameObject);
-        Destroy(transformB.gameObject);
+        min.parent = null;
+        max.parent = null;
+        
+        patrol.parent = null;
 
         eController = GetComponent<CharacterController>();
 
@@ -56,10 +55,6 @@ public class EnemyObject : ShiftObject
             case EnemyState.chase:
                 Chase();
                 break;
-            
-            case EnemyState.patrol:
-                Patrol();
-                break;
         }
         
         if (Vector3.Distance (transform.position, pMovement.transform.position) < eData.viewRange)
@@ -74,9 +69,9 @@ public class EnemyObject : ShiftObject
 
     void Idle()
     {
-        if (transform.position != post)
+        if (transform.position != patrolA)
         {
-            MoveEnemy(post, false);
+            MoveEnemy(patrolA, false);
         }
         
         if (seesPlayer)
@@ -89,12 +84,15 @@ public class EnemyObject : ShiftObject
     {
         Vector3 directionToTarget = pMovement.transform.position - transform.position;
 
-        float distanceToTarget = Vector3.Distance(transform.position, pMovement.transform.position);
-
         // Elevate the Raycast starting position, not to shoot from the floor.
         Vector3 height = new Vector3(0, 1f, 0);
         
-        float targetDirection = pMovement.transform.position.x - transform.position.x;
+
+        Vector3 newPosition = transform.position - transform.right * transform.localScale.x;
+
+        float targetDirection = pMovement.transform.position.x - newPosition.x;
+
+        Debug.DrawRay(transform.position - transform.right * transform.localScale.x, transform.up * 2, Color.white);
 
         if (Mathf.Sign(targetDirection) == Mathf.Sign(transform.localScale.x))
         {
@@ -122,7 +120,11 @@ public class EnemyObject : ShiftObject
         }
         else
         {
-            if (!startedCountdown) { StartCoroutine (WaitForPlayer()); }
+            if (!startedCountdown)
+            {
+                StartCoroutine (WaitForPlayer());
+                return;
+            }
         }
 
         MoveEnemy(lastPlayerPosition, true);
@@ -135,7 +137,14 @@ public class EnemyObject : ShiftObject
         if (attack) { stopDistance = eData.attackDistance; }
         else {stopDistance = eData.stopDistance;}
 
-        if (Mathf.Abs(transform.position.x - location.x) < stopDistance) { return; }
+        if (Mathf.Abs(transform.position.x - location.x) < stopDistance)
+        {
+            if (eState == EnemyState.idle)
+            {
+                if (!startedCountdown) { StartCoroutine(PatrolCountdown()); }
+            }
+            return;
+        }
 
         GetDirection(location);
 
@@ -157,6 +166,12 @@ public class EnemyObject : ShiftObject
 
         // Move the character controller
         eController.Move(eVelocity * Time.deltaTime);
+
+        if (transform.position.x > max.position.x) { transform.position = new Vector3 (max.position.x, transform.position.y, transform.position.z); }
+        if (transform.position.x < min.position.x) { transform.position = new Vector3 (min.position.x, transform.position.y, transform.position.z); }
+        
+        if (transform.position.y > max.position.y) { transform.position = new Vector3 (transform.position.x, max.position.y, transform.position.z); }
+        if (transform.position.y < min.position.y) { transform.position = new Vector3 (transform.position.x, min.position.y, transform.position.z); }
     }
 
     IEnumerator WaitForPlayer()
@@ -190,8 +205,17 @@ public class EnemyObject : ShiftObject
         Debug.DrawLine(targetDirection, targetDirection + Vector3.up * 2);
     }
 
-    void Patrol()
+    IEnumerator PatrolCountdown ()
     {
+        startedCountdown = true;
 
+        yield return new WaitForSeconds (eData.patience);
+
+        Vector3 oldPatrol = patrolA;
+
+        patrolA = patrolB;
+        patrolB = oldPatrol;
+
+        startedCountdown = false;
     }
 }

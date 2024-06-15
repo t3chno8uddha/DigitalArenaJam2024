@@ -9,15 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bebbe4ecfa2db06fc81a901a5ffea826, type: 3}
+  m_Script: {fileID: 11500000, guid: 3216a3284fe7e9a0c8c0a9a5a637e219, type: 3}
   m_Name: Table
   m_EditorClassIdentifier: 
-  entityName: 
   entityMaterial: {fileID: 2100000, guid: 894b1b58c8e169d21a6710edc59bdced, type: 2}
   shiftDistance: 4
-  movementSpeed: 1
-  checksGround: 0
+  movementSpeed: 0
   gravityModifier: 7
+  checksGround: 1
   jumpStrength: 0
   attackEvent:
     m_PersistentCalls:
