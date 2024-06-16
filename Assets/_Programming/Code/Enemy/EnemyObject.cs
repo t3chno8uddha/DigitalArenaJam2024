@@ -17,10 +17,15 @@ public class EnemyObject : ShiftObject, IDamageable
     public CharacterController eController;
 
     public bool seesPlayer;
+    public bool isAttacking;
+
+    Renderer eRenderer;
 
     Vector3 patrolA, patrolB, lastPlayerPosition;
 
+    bool isMoving;
     bool startedCountdown;
+    Animator animator;
 
     void Start()
     {
@@ -32,6 +37,8 @@ public class EnemyObject : ShiftObject, IDamageable
         patrolA = patrol.position;
         patrolB = transform.position;
 
+        eRenderer = GetComponentInChildren<Renderer>();
+
         min.parent = null;
         max.parent = null;
         
@@ -42,19 +49,27 @@ public class EnemyObject : ShiftObject, IDamageable
         pMovement = FindObjectOfType<PlayerMovement>();
 
         InitializeObject(sRenderer);
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        switch (eState)
+        if (isAttacking)
         {
-            case EnemyState.idle:
-                Idle();
-                break;
-            
-            case EnemyState.chase:
-                Chase();
-                break;
+            CheckAttack();
+        }
+        else
+        {
+            switch (eState)
+            {
+                case EnemyState.idle:
+                    Idle();
+                    break;
+                
+                case EnemyState.chase:
+                    Chase();
+                    break;
+            }
         }
         
         if (Vector3.Distance (transform.position, pMovement.transform.position) < eData.viewRange)
@@ -65,6 +80,22 @@ public class EnemyObject : ShiftObject, IDamageable
         {
             seesPlayer = false;
         }
+
+        Animate();
+    }
+    
+    void CheckAttack()
+    {
+        switch (eData.attackType)
+        {
+            case AttackType.melee:
+                Melee(transform.position + new Vector3(0,1,0) + transform.right * xDirection, eData.attackSize);
+                break;
+            case AttackType.ranged:
+                Vector3 directionToTarget = transform.position - transform.position;
+                Ranged(transform.position, directionToTarget, eData.projectile);
+                break;
+        }   
     }
 
     void Idle()
@@ -100,8 +131,24 @@ public class EnemyObject : ShiftObject, IDamageable
             {
                 if (hit.transform == pMovement.transform)
                 {
-                    seesPlayer = true;
-                    Debug.DrawRay(transform.position + height, directionToTarget.normalized, Color.white);
+                    if (pMovement.isEntity)
+                    {
+                        seesPlayer = true;
+                        Debug.DrawRay(transform.position + height, directionToTarget.normalized, Color.white);
+                    }
+                    else
+                    {
+                        switch (eState)
+                        {
+                            case EnemyState.idle:
+                            seesPlayer = false;
+                                break;
+
+                            case EnemyState.chase:
+                            seesPlayer = true;
+                                break;
+                        }
+                    }
                 }
                 else
                 {
@@ -142,7 +189,22 @@ public class EnemyObject : ShiftObject, IDamageable
             {
                 if (!startedCountdown) { StartCoroutine(PatrolCountdown()); }
             }
+
+            if (attack)
+            {
+                if (!isAttacking)
+                {
+                    StartCoroutine(AttackPlayer());
+                }
+            }
+
+            isMoving = false;
+
             return;
+        }
+        else
+        {
+            isMoving = true;
         }
 
         GetDirection(location);
@@ -181,6 +243,15 @@ public class EnemyObject : ShiftObject, IDamageable
 
         startedCountdown = false;
         eState = EnemyState.idle;
+    }
+
+    IEnumerator AttackPlayer ()
+    {
+        isAttacking = true;
+
+        yield return new WaitForSeconds(eData.attackSpeed);
+
+        isAttacking = false; 
     }
 
     void GetDirection(Vector3 targetDirection)
@@ -222,8 +293,13 @@ public class EnemyObject : ShiftObject, IDamageable
     {
         if (pMovement.pData == pMovement.ogData)
         {
-            pMovement.InitializePlayer(eData);
-            print ("HUUUURTS");  
+            Vector3 center = eController.center;
+            float radius = eController.radius;
+            float height = eController.height;
+
+            float scale = eRenderer.transform.localScale.y;
+
+            pMovement.InitializePlayerEnemy(eData, center, radius, height, scale);
 
             Destroy(gameObject);
         }
@@ -231,13 +307,16 @@ public class EnemyObject : ShiftObject, IDamageable
 
     public void Melee(Vector3 position, float size)
     {
-        RaycastHit hit;
-        if (Physics.SphereCast(position, size, Vector3.up, out hit))
+        RaycastHit[] hits = Physics.SphereCastAll(position, size, Vector3.up);
+        foreach (RaycastHit hit in hits)
         {
-            IDamageable damageable = hit.transform.gameObject.GetComponent<IDamageable>();
-            if (damageable != null)
+            if (hit.transform != transform)
             {
-                damageable.Damage();
+                IDamageable damageable = hit.transform.gameObject.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.Damage();
+                }
             }
         }
     }
@@ -256,5 +335,12 @@ public class EnemyObject : ShiftObject, IDamageable
     public void Ranged(Vector3 position, Vector3 angle, GameObject projectile)
     {
         Instantiate(projectile, position, Quaternion.Euler(angle));
+    }
+
+    public void Animate()
+    {
+        animator.SetBool("Is Grounded", eController.isGrounded);
+        animator.SetBool("Is Moving", isMoving);
+        animator.SetBool("Is Attacking", isAttacking);
     }
 }
