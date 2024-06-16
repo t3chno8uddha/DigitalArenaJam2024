@@ -246,11 +246,6 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         {
             // Apply gravity to the y velocity
             pVelocity.y += pData.gravityModifier * gravityDir * Time.deltaTime;
-
-            if (pVelocity.y > pData.gravityModifier * gravityDir)
-            {
-                pVelocity.y = pData.gravityModifier * gravityDir;
-            }
         }
 
         // Move the character controller
@@ -259,6 +254,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
     void Jump(EntityData eData)
     {
+        print("LOL");
         pVelocity.y = eData.jumpStrength;
     }
 
@@ -363,6 +359,8 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         {
             gravityDir = -gravityDir;
             hasFired = true;
+
+            pVelocity.y = 0;
         }
     }
 
