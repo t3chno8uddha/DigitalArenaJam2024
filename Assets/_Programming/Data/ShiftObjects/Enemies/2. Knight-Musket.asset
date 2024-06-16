@@ -19,6 +19,7 @@ MonoBehaviour:
   checksGround: 1
   jumpStrength: 0
   attackType: 2
+  ignoreAngle: 0
   attackSpeed: 1
   attackSize: 1
   attackHeight: 1.5
@@ -26,7 +27,7 @@ MonoBehaviour:
     type: 3}
   viewRange: 6
   patience: 6
-  stopDistance: 0.25
+  stopDistance: 0.1
   attackDistance: 5
   readjustmentSpeed: 0.0125
   sightAngle: 90

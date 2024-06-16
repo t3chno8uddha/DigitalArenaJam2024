@@ -19,6 +19,7 @@ MonoBehaviour:
   checksGround: 1
   jumpStrength: 15
   attackType: 0
+  ignoreAngle: 0
   attackSpeed: 0.5
   attackSize: 1
   attackHeight: 1.5

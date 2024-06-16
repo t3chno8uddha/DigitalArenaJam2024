@@ -19,6 +19,8 @@ public class EnemyObject : ShiftObject, IDamageable
     public bool seesPlayer;
     public bool isAttacking;
 
+    int gravityDir = -1;
+
     bool hasFired;
 
     Renderer eRenderer;
@@ -56,7 +58,7 @@ public class EnemyObject : ShiftObject, IDamageable
 
     void Update()
     {
-        if (isAttacking)
+        if (isAttacking && !hasFired)
         {
             CheckAttack();
         }
@@ -103,11 +105,8 @@ public class EnemyObject : ShiftObject, IDamageable
 
     void Idle()
     {
-        if (transform.position != patrolA)
-        {
-            MoveEnemy(patrolA, false);
-        }
-        
+        MoveEnemy(patrolA, false);
+
         if (seesPlayer)
         {
             eState = EnemyState.chase;
@@ -193,6 +192,8 @@ public class EnemyObject : ShiftObject, IDamageable
                 if (!startedCountdown) { StartCoroutine(PatrolCountdown()); }
             }
 
+            isMoving = false;
+
             if (attack)
             {
                 if (!isAttacking)
@@ -200,10 +201,10 @@ public class EnemyObject : ShiftObject, IDamageable
                     StartCoroutine(AttackPlayer());
                 }
             }
-
-            isMoving = false;
-
-            return;
+            else
+            {
+                return;
+            }
         }
         else
         {
@@ -214,18 +215,18 @@ public class EnemyObject : ShiftObject, IDamageable
 
         eVelocity.x = xDirection * eData.movementSpeed;
 
-        if (eVelocity.y < -eData.gravityModifier)
+        if (eVelocity.y < eData.gravityModifier * gravityDir)
         {
             if (eController.isGrounded)
             {
-                eVelocity.y = -eData.gravityModifier;
+                eVelocity.y = eData.gravityModifier * gravityDir;
             }
         }
         
         if (!eController.isGrounded)
         {
             // Apply gravity to the y velocity
-            eVelocity.y += -eData.gravityModifier * Time.deltaTime;
+            eVelocity.y += eData.gravityModifier * gravityDir * Time.deltaTime;
         }
 
         // Move the character controller
@@ -339,10 +340,8 @@ public class EnemyObject : ShiftObject, IDamageable
         }
     }
 
-    public void ToggleLatch(EntityData eData)
+    public void ToggleLatch()
     {
-        eData.gravityModifier = -eData.gravityModifier;
-        eData.jumpStrength = -eData.jumpStrength;
     }
     
     public void Animate()

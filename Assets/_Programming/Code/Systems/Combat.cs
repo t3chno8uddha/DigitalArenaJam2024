@@ -5,7 +5,7 @@ public interface IDamageable
     void Damage (bool shift);
     void Melee (Vector3 position, float size);
     void Ranged (Vector3 position, GameObject projectile);
-    void ToggleLatch (EntityData eData);
+    void ToggleLatch ();
 
     void Animate();
 }
