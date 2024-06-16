@@ -9,8 +9,11 @@ public class EntityData : ShiftData
     
     public AttackType attackType;
 
+    public bool ignoreAngle = false;
+
     public float attackSpeed = 0.5f;
 
     public float attackSize;
+    public float attackHeight;
     public GameObject projectile;
 }

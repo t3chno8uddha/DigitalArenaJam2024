@@ -89,10 +89,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
-  m_Height: 4
+  m_Radius: 1.5
+  m_Height: 3.5
   m_Direction: 1
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Center: {x: 0, y: 1.75, z: 0}
 --- !u!143 &6440083422839383995
 CharacterController:
   m_ObjectHideFlags: 0
@@ -112,13 +112,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 4
-  m_Radius: 1
+  m_Height: 3.5
+  m_Radius: 1.5
   m_SlopeLimit: 45
   m_StepOffset: 0.1
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Center: {x: 0, y: 1.75, z: 0}
 --- !u!114 &5129048853464649578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,9 +140,11 @@ MonoBehaviour:
   max: {fileID: 2194785014380764823}
   patrol: {fileID: 2252113989125654628}
   eState: 0
+  xDirection: 0
   eVelocity: {x: 0, y: 0, z: 0}
   eController: {fileID: 0}
   seesPlayer: 0
+  isAttacking: 0
 --- !u!95 &5022682515886822609
 Animator:
   serializedVersion: 5
@@ -192,8 +194,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3401984720105984000}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

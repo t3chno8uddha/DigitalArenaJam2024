@@ -64,6 +64,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_de1774400f7d4589bac733fd41f97bde_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 6037a2f2969e1fd97b6db5fa87a441fd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -119,6 +123,7 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Step_Edge: 0.266
+    - _Steps: 64
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1

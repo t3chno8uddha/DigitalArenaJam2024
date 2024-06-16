@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour, IDamageable
 {
@@ -26,10 +25,9 @@ public class PlayerMovement : MonoBehaviour, IDamageable
     public bool isAttacking;
     
     public float cameraCursorDistance = 0.33f;
+    public float camZ;
 
-    public Transform cinemachineTarget;
-
-    Vector3 viewDirection;
+    public Transform cinemachineTarget, viewDirection;
     
     Animator animator;
     public bool isMoving;
@@ -38,11 +36,12 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
     public bool isEntity;
 
-    public Image sceneFader;
-    public float sceneFadeSmoothness = 0.125f;
+    Transitioner transitioner;
 
     bool isLoading;
     int nextScene;
+
+    bool hasFired = false;
 
     void Start()
     {
@@ -56,6 +55,8 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         InitializePlayer(ogData);
 
         previousXInput = transform.localScale.x;
+
+        transitioner = FindObjectOfType<Transitioner>();
     }
 
     public void InitializePlayer(ShiftData data)
@@ -94,7 +95,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
     void Update()
     {
         Move();
-        Animate();
+        if (isEntity) { Animate(); }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -124,16 +125,9 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         
         if (isLoading)
         {
-            Vector4 sceneFadeColor = sceneFader.color;
-            sceneFadeColor.w = Mathf.Lerp(sceneFadeColor.w, 1, sceneFadeSmoothness * Time.deltaTime);
-            
-            if (sceneFadeColor.w > 0.99f)
+            if (transitioner.pState != PosterizeState.fadeOut)
             {
                 SceneManager.LoadScene(nextScene);
-            }
-            else
-            {
-                sceneFader.color = sceneFadeColor;
             }
         }
 
@@ -141,16 +135,20 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         {
             EntityData eData = pData as EntityData;
             
+            Vector3 attackPosition = transform.position + new Vector3(0,eData.attackHeight,0) + transform.right * previousXInput;
+
+            Debug.DrawLine(attackPosition, attackPosition + Vector3.up * 2);
+
             switch (eData.attackType)
             {
                 case AttackType.assassination:
-                    Assassinate(transform.position + new Vector3(0,1,0) + transform.right * previousXInput, eData.attackSize);
+                    Assassinate(attackPosition, eData.attackSize);
                     break;
                 case AttackType.melee:
-                    Melee(transform.position + new Vector3(0,1,0) + transform.right * previousXInput, eData.attackSize);
+                    Melee(attackPosition, eData.attackSize);
                     break;
                 case AttackType.ranged:
-                    Ranged(transform.position, viewDirection, eData.projectile);
+                    Ranged(attackPosition, eData.projectile);
                     break;
                 case AttackType.latch:
                     //ToggleLatch();
@@ -166,6 +164,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         EntityData eData = pData as EntityData;
         yield return new WaitForSeconds(eData.attackSpeed);
 
+        hasFired = false;
         isAttacking = false; 
     }
 
@@ -176,10 +175,10 @@ public class PlayerMovement : MonoBehaviour, IDamageable
             if (pData is EntityData)
             {
                 EntityData eData = pData as EntityData;
-                
+        
                 // Draw a yellow sphere at the transform's position
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(transform.position + new Vector3(0,1,0)  + transform.right * previousXInput, eData.attackSize);
+                Gizmos.DrawSphere(transform.position + new Vector3(0,eData.attackHeight,0) + transform.right * previousXInput, eData.attackSize);
             }
         }
     }
@@ -188,11 +187,13 @@ public class PlayerMovement : MonoBehaviour, IDamageable
     void Move()
     {       
         // Get the cursor position
-        viewDirection = playerCamera.ScreenToWorldPoint(new Vector3 (Input.mousePosition.x, Input.mousePosition.y, cameraCursorDistance));
-        viewDirection.z = transform.position.z;
-        
+        Vector3 viewDir = playerCamera.ScreenToWorldPoint(new Vector3 (Input.mousePosition.x, Input.mousePosition.y, camZ));
+        viewDir.z = transform.position.z;
+
+        viewDirection.transform.position = viewDir;
+
         // Ensure that the camera is between the cursor and the player. 0 meaning stuck at the player, 1 at the camera.
-        var newCameraPosition = Vector3.Lerp(transform.position, viewDirection, cameraCursorDistance);
+        var newCameraPosition = Vector3.Lerp(transform.position, viewDirection.position, cameraCursorDistance);
 
         cinemachineTarget.position = newCameraPosition;
 
@@ -256,7 +257,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         pVelocity.y = eData.jumpStrength;
     }
 
-    public void Damage()
+    public void Damage(bool shift)
     {
         if (!immunized)
         {
@@ -291,16 +292,25 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         
         foreach (RaycastHit hit in hits)
         {
-            if (hit.transform.GetComponent<EnemyObject>() != null)
+            EnemyObject eObj = hit.transform.GetComponent<EnemyObject>();
+
+            if (eObj != null)
             {
                 IDamageable damageable = hit.transform.gameObject.GetComponent<IDamageable>();
-                
+
                 if (damageable != null)
                 {
-                    if (hit.transform.localScale.x == previousXInput)
+                    if (eObj.eData.ignoreAngle)
                     {
-                        damageable.Damage();
-                    }     
+                        damageable.Damage(true);
+                    }
+                    else
+                    {
+                        if (hit.transform.localScale.x == previousXInput)
+                        {
+                            damageable.Damage(true);
+                        }     
+                    }
                 }
             }
         }
@@ -316,14 +326,25 @@ public class PlayerMovement : MonoBehaviour, IDamageable
                 IDamageable damageable = hit.transform.gameObject.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
-                    damageable.Damage();
+                    damageable.Damage(false);
                 }
             }
         }
     }
-    public void Ranged(Vector3 position, Vector3 angle, GameObject projectile)
-    {
-        Instantiate(projectile, position, Quaternion.Euler(angle));
+    
+    public void Ranged(Vector3 position, GameObject projectile)
+    {   
+        if (!hasFired)
+        {
+            hasFired = true;
+
+            Vector3 viewDir = viewDirection.position - position;
+            
+            Quaternion rotation = Quaternion.LookRotation(viewDir);
+            
+            Projectile proj = Instantiate(projectile, position, rotation).GetComponent<Projectile>();
+            proj.progenitor = gameObject;
+        }
     }
 
     public void ToggleLatch(EntityData eData)
@@ -334,8 +355,18 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
     public void Animate()
     {
-        animator.SetBool("Is Grounded", pController.isGrounded);
-        animator.SetBool("Is Moving", isMoving);
+        EntityData eData = pData as EntityData;
+        if (eData.checksGround)
+        {
+            animator.SetBool("Is Grounded", pController.isGrounded);
+            animator.SetBool("Is Moving", isMoving);
+        }
+        else
+        {
+            animator.SetBool("Is Grounded", true);
+            animator.SetBool("Is Moving", true);
+        }
+        
         animator.SetBool("Is Attacking", isAttacking);
     }
 
@@ -343,5 +374,6 @@ public class PlayerMovement : MonoBehaviour, IDamageable
     {
         isLoading = true;
         nextScene = index;
+        transitioner.pState = PosterizeState.fadeOut;
     }
 }

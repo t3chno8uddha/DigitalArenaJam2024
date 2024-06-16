@@ -5,7 +5,7 @@ public enum EnemyState {idle, chase}
 
 public class EnemyObject : ShiftObject, IDamageable
 {
-    EnemyData eData;
+    public EnemyData eData;
 
     public Transform min, max;
     public Transform patrol;
@@ -18,6 +18,8 @@ public class EnemyObject : ShiftObject, IDamageable
 
     public bool seesPlayer;
     public bool isAttacking;
+
+    bool hasFired;
 
     Renderer eRenderer;
 
@@ -86,14 +88,15 @@ public class EnemyObject : ShiftObject, IDamageable
     
     void CheckAttack()
     {
+        Vector3 attackPosition = transform.position + new Vector3(0,eData.attackHeight,0) + transform.right * xDirection;
+
         switch (eData.attackType)
         {
             case AttackType.melee:
-                Melee(transform.position + new Vector3(0,1,0) + transform.right * xDirection, eData.attackSize);
+                Melee(attackPosition, eData.attackSize);
                 break;
             case AttackType.ranged:
-                Vector3 directionToTarget = transform.position - transform.position;
-                Ranged(transform.position, directionToTarget, eData.projectile);
+                Ranged(attackPosition, eData.projectile);
                 break;
         }   
     }
@@ -252,6 +255,7 @@ public class EnemyObject : ShiftObject, IDamageable
         yield return new WaitForSeconds(eData.attackSpeed);
 
         isAttacking = false; 
+        hasFired = false;
     }
 
     void GetDirection(Vector3 targetDirection)
@@ -289,9 +293,9 @@ public class EnemyObject : ShiftObject, IDamageable
         startedCountdown = false;
     }
 
-    public void Damage()
+    public void Damage(bool shift)
     {
-        if (pMovement.pData == pMovement.ogData)
+        if (shift)
         {
             Vector3 center = eController.center;
             float radius = eController.radius;
@@ -300,9 +304,9 @@ public class EnemyObject : ShiftObject, IDamageable
             float scale = eRenderer.transform.localScale.y;
 
             pMovement.InitializePlayerEnemy(eData, center, radius, height, scale);
-
-            Destroy(gameObject);
         }
+        
+        Destroy(gameObject);
     }
 
     public void Melee(Vector3 position, float size)
@@ -315,15 +319,24 @@ public class EnemyObject : ShiftObject, IDamageable
                 IDamageable damageable = hit.transform.gameObject.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
-                    damageable.Damage();
+                    damageable.Damage(false);
                 }
             }
         }
     }
     
-    public void Ranged(Vector3 position, Transform angle, GameObject projectile)
+    public void Ranged(Vector3 position, GameObject projectile)
     {
-        Instantiate(projectile, position, angle.rotation);
+        if (!hasFired)
+        {
+            hasFired = true;
+
+            Vector3 viewDir = pMovement.transform.position + new Vector3(0, eData.attackHeight, 0) - position;
+            Quaternion rotation = Quaternion.LookRotation(viewDir);
+            
+            Projectile proj = Instantiate(projectile, position, rotation).GetComponent<Projectile>();
+            proj.progenitor = gameObject;
+        }
     }
 
     public void ToggleLatch(EntityData eData)
@@ -331,16 +344,19 @@ public class EnemyObject : ShiftObject, IDamageable
         eData.gravityModifier = -eData.gravityModifier;
         eData.jumpStrength = -eData.jumpStrength;
     }
-
-    public void Ranged(Vector3 position, Vector3 angle, GameObject projectile)
-    {
-        Instantiate(projectile, position, Quaternion.Euler(angle));
-    }
-
+    
     public void Animate()
     {
-        animator.SetBool("Is Grounded", eController.isGrounded);
-        animator.SetBool("Is Moving", isMoving);
+        if (eData.checksGround)
+        {
+            animator.SetBool("Is Grounded", eController.isGrounded);
+            animator.SetBool("Is Moving", isMoving);
+        }
+        else
+        {
+            animator.SetBool("Is Grounded", true);
+            animator.SetBool("Is Moving", true);
+        }
         animator.SetBool("Is Attacking", isAttacking);
     }
 }

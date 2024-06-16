@@ -2,9 +2,9 @@ using UnityEngine;
 
 public interface IDamageable 
 {
-    void Damage ();
+    void Damage (bool shift);
     void Melee (Vector3 position, float size);
-    void Ranged (Vector3 position, Vector3 angle, GameObject projectile);
+    void Ranged (Vector3 position, GameObject projectile);
     void ToggleLatch (EntityData eData);
 
     void Animate();

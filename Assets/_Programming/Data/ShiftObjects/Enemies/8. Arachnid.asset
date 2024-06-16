@@ -20,7 +20,8 @@ MonoBehaviour:
   jumpStrength: 20
   attackType: 1
   attackSpeed: 0.25
-  attackSize: 2
+  attackSize: 1
+  attackHeight: 1.5
   projectile: {fileID: 0}
   viewRange: 5
   patience: 4
