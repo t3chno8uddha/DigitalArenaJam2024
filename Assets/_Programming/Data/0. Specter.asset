@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityMaterial: {fileID: 2100000, guid: 39ebdedb4eca2eec8a4f1ee27ed5b215, type: 2}
   shiftDistance: 3
-  movementSpeed: 5
+  movementSpeed: 7
   gravityModifier: 35
   checksGround: 1
   jumpStrength: 16

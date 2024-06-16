@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
     Transitioner transitioner;
 
+
     bool isLoading;
     int nextScene;
 
@@ -88,7 +89,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         pController.radius = radius;
         pController.height = height;
 
-        pRenderer.transform.localScale = new Vector3(scale * -previousXInput, scale, scale);
+        pRenderer.transform.localScale = new Vector3(scale, scale, scale);
 
         InitializePlayer(data);
     }

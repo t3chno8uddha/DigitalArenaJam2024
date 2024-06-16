@@ -17,17 +17,17 @@ MonoBehaviour:
   movementSpeed: 5
   gravityModifier: 35
   checksGround: 1
-  jumpStrength: 20
+  jumpStrength: 25
   attackType: 2
   ignoreAngle: 0
-  attackSpeed: 3
+  attackSpeed: 1
   attackSize: 1
   attackHeight: 2
   projectile: {fileID: 2461930966476329524, guid: 529fd62c418116a5b8f5ed30ad925296,
     type: 3}
-  viewRange: 7
+  viewRange: 10
   patience: 4
   stopDistance: 0.1
-  attackDistance: 6
+  attackDistance: 5
   readjustmentSpeed: 0.0125
   sightAngle: 90

@@ -123,7 +123,7 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Step_Edge: 0.266
-    - _Steps: 43.616535
+    - _Steps: 54.546955
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
