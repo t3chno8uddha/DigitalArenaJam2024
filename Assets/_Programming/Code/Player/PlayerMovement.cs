@@ -134,26 +134,29 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
         if (isAttacking && !hasFired)
         {
-            EntityData eData = pData as EntityData;
-            
-            Vector3 attackPosition = transform.position + new Vector3(0,eData.attackHeight,0) + transform.right * previousXInput;
-
-            Debug.DrawLine(attackPosition, attackPosition + Vector3.up * 2);
-
-            switch (eData.attackType)
+            if (pData is EntityData)
             {
-                case AttackType.assassination:
-                    Assassinate(attackPosition, eData.attackSize);
-                    break;
-                case AttackType.melee:
-                    Melee(attackPosition, eData.attackSize);
-                    break;
-                case AttackType.ranged:
-                    Ranged(attackPosition, eData.projectile);
-                    break;
-                case AttackType.latch:
-                    ToggleLatch();
-                    break;
+                EntityData eData = pData as EntityData;
+                
+                Vector3 attackPosition = transform.position + new Vector3(0,eData.attackHeight,0) + transform.right * previousXInput;
+
+                Debug.DrawLine(attackPosition, attackPosition + Vector3.up * 2);
+
+                switch (eData.attackType)
+                {
+                    case AttackType.assassination:
+                        Assassinate(attackPosition, eData.attackSize);
+                        break;
+                    case AttackType.melee:
+                        Melee(attackPosition, eData.attackSize);
+                        break;
+                    case AttackType.ranged:
+                        Ranged(attackPosition, eData.projectile);
+                        break;
+                    case AttackType.latch:
+                        ToggleLatch();
+                        break;
+                }
             }
         }
     }
