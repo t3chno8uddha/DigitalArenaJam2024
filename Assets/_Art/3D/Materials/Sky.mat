@@ -150,12 +150,12 @@ Material:
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _dilution: 1
+    - _dilution: 2
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _horizon_color: {r: 0.106000006, g: 0.031799998, b: 0.060243323, a: 1}
-    - _sky_color: {r: 0.039333995, g: 0.103086896, b: 0.142, a: 1}
+    - _horizon_color: {r: 0.039215688, g: 0.101960786, b: 0.14117648, a: 1}
+    - _sky_color: {r: 0.13333334, g: 0.14117648, b: 0.2, a: 1}
   m_BuildTextureStacks: []

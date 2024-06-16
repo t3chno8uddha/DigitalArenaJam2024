@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3216a3284fe7e9a0c8c0a9a5a637e219, type: 3}
   m_Name: 0. Specter
   m_EditorClassIdentifier: 
-  entityName: Specter
   entityMaterial: {fileID: 2100000, guid: 39ebdedb4eca2eec8a4f1ee27ed5b215, type: 2}
   shiftDistance: 3
-  movementSpeed: 7
+  movementSpeed: 4
+  gravityModifier: 35
   checksGround: 1
-  gravityModifier: 33
   jumpStrength: 15
-  attackEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  attackType: 0
+  attackSpeed: 0.25
+  attackSize: 1
+  projectile: {fileID: 0}

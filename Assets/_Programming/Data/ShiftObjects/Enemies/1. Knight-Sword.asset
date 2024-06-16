@@ -9,15 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3216a3284fe7e9a0c8c0a9a5a637e219, type: 3}
+  m_Script: {fileID: 11500000, guid: c8accb879f2202ef89d423199e2d6d28, type: 3}
   m_Name: 1. Knight-Sword
   m_EditorClassIdentifier: 
   entityMaterial: {fileID: 2100000, guid: 370b55fd41a5c72cd94f18a68d2c95f5, type: 2}
   shiftDistance: 3
-  movementSpeed: 4
+  movementSpeed: 5
+  gravityModifier: 35
   checksGround: 1
-  gravityModifier: 7
   jumpStrength: 0
-  attackEvent:
-    m_PersistentCalls:
-      m_Calls: []
+  attackType: 1
+  attackSpeed: 0.25
+  attackSize: 0
+  projectile: {fileID: 0}
+  viewRange: 5
+  patience: 4
+  stopDistance: 0.25
+  attackDistance: 1
+  readjustmentSpeed: 0.0125
+  sightAngle: 90
