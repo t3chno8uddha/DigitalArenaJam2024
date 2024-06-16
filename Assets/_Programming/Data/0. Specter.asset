@@ -17,7 +17,7 @@ MonoBehaviour:
   movementSpeed: 5
   gravityModifier: 35
   checksGround: 1
-  jumpStrength: 15
+  jumpStrength: 16
   attackType: 0
   ignoreAngle: 0
   attackSpeed: 0.5
