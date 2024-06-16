@@ -54,7 +54,7 @@ public class Projectile : MonoBehaviour
         marked = true;
         Destroy(GetComponent<Collider>());
         Destroy(GetComponent<Rigidbody>());
-        Destroy(rTransform);
+        Destroy(rTransform.gameObject);
 
         yield return new WaitForSeconds(countdown);
 

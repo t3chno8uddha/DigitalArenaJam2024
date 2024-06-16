@@ -142,7 +142,7 @@ MonoBehaviour:
   patrol: {fileID: 1881801927983319463}
   eState: 0
   xDirection: 0
-  eVelocity: {x: 0, y: 0, z: 0}
+  eVelocity: {x: 0, y: -10, z: 0}
   eController: {fileID: 0}
   seesPlayer: 0
   isAttacking: 0
