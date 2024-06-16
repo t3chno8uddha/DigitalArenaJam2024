@@ -18,15 +18,16 @@ MonoBehaviour:
   gravityModifier: 35
   checksGround: 1
   jumpStrength: 20
-  attackType: 1
+  attackType: 2
   ignoreAngle: 0
-  attackSpeed: 0.25
+  attackSpeed: 3
   attackSize: 1
-  attackHeight: 1.5
-  projectile: {fileID: 0}
-  viewRange: 5
+  attackHeight: 2
+  projectile: {fileID: 2461930966476329524, guid: 529fd62c418116a5b8f5ed30ad925296,
+    type: 3}
+  viewRange: 7
   patience: 4
   stopDistance: 0.1
-  attackDistance: 1
+  attackDistance: 6
   readjustmentSpeed: 0.0125
   sightAngle: 90

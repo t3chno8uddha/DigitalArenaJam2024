@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityMaterial: {fileID: 2100000, guid: 3403cda7f0ff2df4eb4ace1043ac1acc, type: 2}
   shiftDistance: 3
-  movementSpeed: 5
+  movementSpeed: 3
   gravityModifier: 35
   checksGround: 1
-  jumpStrength: 0
+  jumpStrength: 15
   attackType: 1
   ignoreAngle: 0
-  attackSpeed: 0.25
-  attackSize: 1
-  attackHeight: 1.5
+  attackSpeed: 0.1
+  attackSize: 3
+  attackHeight: 2
   projectile: {fileID: 0}
-  viewRange: 5
-  patience: 4
+  viewRange: 8
+  patience: 5
   stopDistance: 0.1
-  attackDistance: 1
+  attackDistance: 2
   readjustmentSpeed: 0.0125
   sightAngle: 90

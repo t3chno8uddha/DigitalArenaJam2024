@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public enum EnemyState {idle, chase}
@@ -13,7 +14,7 @@ public class EnemyObject : ShiftObject, IDamageable
     public EnemyState eState;
 
     [HideInInspector] public float xDirection;
-    public Vector3 eVelocity;
+    public Vector3 eVelocity = new Vector3(0,-100,0);
     public CharacterController eController;
 
     public bool seesPlayer;
@@ -201,10 +202,7 @@ public class EnemyObject : ShiftObject, IDamageable
                     StartCoroutine(AttackPlayer());
                 }
             }
-            else
-            {
-                return;
-            }
+            return;
         }
         else
         {
@@ -332,7 +330,7 @@ public class EnemyObject : ShiftObject, IDamageable
         {
             hasFired = true;
 
-            Vector3 viewDir = pMovement.transform.position + new Vector3(0, eData.attackHeight, 0) - position;
+            Vector3 viewDir = pMovement.transform.position + new Vector3(0, eData.attackHeight/2, 0) - position;
             Quaternion rotation = Quaternion.LookRotation(viewDir);
             
             Projectile proj = Instantiate(projectile, position, rotation).GetComponent<Projectile>();
