@@ -26,7 +26,7 @@ MonoBehaviour:
   projectile: {fileID: 0}
   viewRange: 0
   patience: 0
-  stopDistance: 0
+  stopDistance: 0.1
   attackDistance: 0
   readjustmentSpeed: 0.0125
   sightAngle: 90

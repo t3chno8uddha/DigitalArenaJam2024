@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
     public Transform cinemachineTarget, viewDirection;
     
     Animator animator;
+    int gravityDir = -1;
     public bool isMoving;
 
     float previousXInput;
@@ -131,7 +132,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
             }
         }
 
-        if (isAttacking)
+        if (isAttacking && !hasFired)
         {
             EntityData eData = pData as EntityData;
             
@@ -151,7 +152,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
                     Ranged(attackPosition, eData.projectile);
                     break;
                 case AttackType.latch:
-                    //ToggleLatch();
+                    ToggleLatch();
                     break;
             }
         }
@@ -182,7 +183,6 @@ public class PlayerMovement : MonoBehaviour, IDamageable
             }
         }
     }
-
 
     void Move()
     {       
@@ -234,18 +234,23 @@ public class PlayerMovement : MonoBehaviour, IDamageable
             }
         }
 
-        if (pVelocity.y < -pData.gravityModifier)
+        if (pVelocity.y < pData.gravityModifier * gravityDir)
         {
             if (pController.isGrounded)
             {
-                pVelocity.y = -pData.gravityModifier;
+                pVelocity.y = pData.gravityModifier * gravityDir;
             }
         }
     
         if (!pController.isGrounded)
         {
             // Apply gravity to the y velocity
-            pVelocity.y += -pData.gravityModifier * Time.deltaTime;
+            pVelocity.y += pData.gravityModifier * gravityDir * Time.deltaTime;
+
+            if (pVelocity.y > pData.gravityModifier * gravityDir)
+            {
+                pVelocity.y = pData.gravityModifier * gravityDir;
+            }
         }
 
         // Move the character controller
@@ -318,15 +323,20 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
     public void Melee(Vector3 position, float size)
     {
-        RaycastHit[] hits = Physics.SphereCastAll(position, size, Vector3.up);
-        foreach (RaycastHit hit in hits)
+        if (!hasFired)
         {
-            if (hit.transform != transform)
+            hasFired = true;
+
+            RaycastHit[] hits = Physics.SphereCastAll(position, size, Vector3.up);
+            foreach (RaycastHit hit in hits)
             {
-                IDamageable damageable = hit.transform.gameObject.GetComponent<IDamageable>();
-                if (damageable != null)
+                if (hit.transform != transform)
                 {
-                    damageable.Damage(false);
+                    IDamageable damageable = hit.transform.gameObject.GetComponent<IDamageable>();
+                    if (damageable != null)
+                    {
+                        damageable.Damage(false);
+                    }
                 }
             }
         }
@@ -347,10 +357,13 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         }
     }
 
-    public void ToggleLatch(EntityData eData)
+    public void ToggleLatch()
     {
-        eData.gravityModifier = -eData.gravityModifier;
-        eData.jumpStrength = -eData.jumpStrength;
+        if (!hasFired)
+        {
+            gravityDir = -gravityDir;
+            hasFired = true;
+        }
     }
 
     public void Animate()
